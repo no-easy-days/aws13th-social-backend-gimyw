@@ -1,5 +1,13 @@
-from fastapi import FastAPI
+from fastapi import FastAPI,Query
+from enum import Enum
 
+class PostSortType(str, Enum):
+    '''
+    최신순,조회수순,좋아요순
+    '''
+    latest = "latest"
+    views = "views"
+    likes = "likes"
 app = FastAPI()
 ############### 먼저 Users 엔드포인트 작성 ############
 # 내 프로필 조회
@@ -26,7 +34,7 @@ async def get_user_posts(
 async def get_user_comments(
         page : int = 1,
         limit: int = 20,
-        sort : str | None = None
+        sort: str | None = None
 ):
     return {"page" : page, "limit": limit, "sort": sort}
 
@@ -60,13 +68,12 @@ async def delete_user():
 async def get_posts(
         page : int = 1,
         limit: int = 20
-
 ):
     return {"page": page, "limit": limit}
 # 게시글 검색
 @app.get("/posts/search")
-async def get_search(
-        keyword: str,
+async def get_posts_by_keyword(
+        keyword: str = Query(min_length=1),
         page: int = 1,
         limit: int = 20
 ):
@@ -75,7 +82,7 @@ async def get_search(
 # 게시글 정렬
 @app.get("/posts/sorted")
 async def get_posts_sorted(
-        sort : str,
+        sort : PostSortType,
         page: int = 1,
         limit: int = 20
 ):
