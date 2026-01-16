@@ -202,7 +202,7 @@ Cmd + T (Ctrl + T) 누르면 탭 추가가 가능합니다. 참고하세요!
 | 파라미터  | 타입      | 필수 | 설명              |
 |-------|---------|----|-----------------|
 | page  | integer | X  | 페이지 번호(기본값 : 1) |
-| limit | intger  | X  | 페이지당 댓글 수       |
+| limit | integer | X  | 페이지당 댓글 수       |
 
 **Response (200 OK)**
 
@@ -364,7 +364,7 @@ Cmd + T (Ctrl + T) 누르면 탭 추가가 가능합니다. 참고하세요!
     {
       "post_id": "1",
       "title": "게시글의 제목",
-      "sort": "
+      "sort": "latest",
       "author": {
         "author_id": "admin",
         "nickname": "abc"
@@ -518,7 +518,7 @@ Cmd + T (Ctrl + T) 누르면 탭 추가가 가능합니다. 참고하세요!
 {
   "status": "error",
   "error": {
-    "code": "NOT_FOUND"
+    "code": "NOT_FOUND",
     "message": "사용자를 찾을 수 없습니다."
   }
 }
@@ -844,10 +844,10 @@ Cmd + T (Ctrl + T) 누르면 탭 추가가 가능합니다. 참고하세요!
     "post_id": "1",
     "id": "comment_1",
     "author": {
-      "login_id": "admin"
+      "login_id": "admin",
       "nickname": "abc"
     },
-    "content": "댓글의 내용"
+    "content": "댓글의 내용",
     "created_at": "2026-01-04T12:00:00Z"
   }
 }
@@ -946,7 +946,7 @@ Cmd + T (Ctrl + T) 누르면 탭 추가가 가능합니다. 참고하세요!
 {
   "status": "success",
   "data": {
-    "post_id": "1"
+    "post_id": "1", 
     "title": "수정된 게시글의 제목",
     "content": "수정된 게시글의 내용",
     "author": {
@@ -1209,7 +1209,6 @@ Cmd + T (Ctrl + T) 누르면 탭 추가가 가능합니다. 참고하세요!
   "data": {
     "token_type": "Bearer",
     "access_token": "...",
-    // 실제 API 요청에 사용되는 토큰
     "expires_in": 3600
   }
 }

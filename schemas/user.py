@@ -1,6 +1,4 @@
 # users의 관련된 pydantic 스키마 작성하는 부분
-from typing import List
-
 from pydantic import BaseModel, EmailStr, Field
 from datetime import datetime
 
@@ -8,7 +6,7 @@ from datetime import datetime
 # 이제 클라이언트가 회원가입할때
 class CreateUser(BaseModel):
     email: EmailStr
-    password: str
+    password: str = Field(..., min_length=8, description="8자 이상, 영문/숫자/특수 문자 포함")
     nickname: str
     profile_image: str | None = None
 # 회원가입하고 나서
@@ -43,20 +41,20 @@ class UpdateUserResponse(BaseModel):
 class LoginUserRequest(BaseModel):
     email: EmailStr = Field(...,description="가입한 이메일 주소")
     password: str = Field(..., min_length=8, description="8자 이상, 영문/숫자/특수 문자 포함")
+class TokenData(BaseModel):
+    token_type: str = "Bearer" # "token" 대신 "token_type" 권장
+    access_token: str
+    expires_in: int
 # 회원 로그인 응답
 class LoginUserResponse(BaseModel):
     status: str = "success"
-    class TokenData(BaseModel):
-        token_type:str = "Bearer"
-        access_token: str
-        expires_in: int
     data: TokenData
 
 
 # 내 프로필 조회
 # 요청할께 없다
 class GetProfile(BaseModel):
-    satus: str = "success"
+    status: str = "success"
     class Userinfo(BaseModel):
         email: EmailStr
         nickname: str
@@ -66,7 +64,7 @@ class GetProfile(BaseModel):
 
 # 특정 회원 조회
 class OtherUserProfileResponse(BaseModel):
-    satus: str = "success"
+    status: str = "success"
     class Userinfo(BaseModel):
         email: EmailStr
         nickname: str
@@ -85,7 +83,7 @@ class Pagination(BaseModel):
     total: int
 class MyPostsResponse(BaseModel):
     status: str = "success"
-    data: List[PostSummary]
+    data: list[PostSummary]
     pagination: Pagination
 
 # 내가 작성한 댓글
@@ -102,7 +100,7 @@ class CommentSummary(BaseModel):
 
 class MyCommentsResponse(BaseModel):
     status: str = "success"
-    data: List[CommentSummary]
+    data: list[CommentSummary]
     pagination: Pagination
 
 # 내가 좋아요한 게시글 목록
@@ -120,7 +118,7 @@ class LikesPostSummary(BaseModel):
 
 class MyLikesResponse(BaseModel):
     status: str = "success"
-    data: List[LikesPostSummary]
+    data: list[LikesPostSummary]
     pagination: Pagination
 
 

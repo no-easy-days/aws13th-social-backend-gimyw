@@ -1,11 +1,8 @@
 from typing import Annotated
-
-import datetime
+from datetime import datetime
 from fastapi import FastAPI, Query, Body, status, Header, Response
 from enum import Enum
-
 from pydantic import EmailStr
-
 from schemas import user
 from schemas.user import CreateUser, UpdateUserRequest, LoginUserRequest, GetProfile, OtherUserProfileResponse
 
@@ -69,12 +66,12 @@ async def get_user_posts(
             {
                 "post_id": "1",
                 "title": "첫 글",
-                "created_at": "2026-01-16T..."
+                "created_at": "2026-01-16T12:00:00Z"
             },
             {
                 "post_id": "2",
                 "title": "두 번째",
-                "created_at": "2026-01-16T..."
+                "created_at": "2026-01-16T12:00:00Z"
             }
         ],
         "pagination": {
@@ -88,7 +85,7 @@ async def get_user_posts(
 # 내가 작성한 댓글
 @app.get("/users/me/comments", response_model=user.MyCommentsResponse)
 async def get_user_comments(
-        authorization: Annotated[str, Header()],
+        authorization: Annotated[str, Header(description="Bearer access token")],
         page: int = Query(default=1, ge=1, description="페이지 번호"),
         limit: int = Query(default=20, ge=1, le=100, description="페이지당 항목 수"),
 ):
@@ -96,9 +93,14 @@ async def get_user_comments(
         "status": "success",
         "data": [
             {
-                "post_id": "1",
-                "title": "내가 쓴 게시글 제목",
-                "created_at": "2026-01-04T12:00:00Z"
+                "id": "comment_1",
+                "post": {
+                    "id": "1",
+                    "title": "게시글 제목"
+                },
+                "content": "내가 작성한 댓글",
+                "created_at": "2026-01-04T12:00:00Z",
+                "updated_at": "2026-01-05T12:00:00Z"
             }
         ],
         "pagination": {
@@ -112,6 +114,7 @@ async def get_user_comments(
 # 내가 좋아요한 게시글 목록
 @app.get("/users/me/likes", response_model=user.MyLikesResponse)
 async def get_user_likes(
+        authorization: Annotated[str, Header(description="로그인 토큰으로 인증")],
         page: int = Query(default=1, ge=1, description="페이지 번호"),
         limit: int = Query(default=20, ge=1, le=100, description="페이지당 항목 수")
 ):
@@ -131,8 +134,8 @@ async def get_user_likes(
             }
         ],
         "pagination": {
-            "page": 1,
-            "limit": 20,
+            "page": page,
+            "limit": limit,
             "total": 100
         }
     }
@@ -143,8 +146,8 @@ async def get_user_likes(
 async def post_users(
         user_data: Annotated[CreateUser, Body()]
 ):
-    current_time = datetime.now().isoformat()
-    return {"status": user_data.status,
+    current_time = datetime.datetime.now().isoformat()
+    return {"status": "success",
             "data": {
                 "email": user_data.email,
                 "nickname": user_data.nickname,
@@ -155,12 +158,14 @@ async def post_users(
 
 
 # 프로필 수정
-@app.put("/users/me", response_model=user.ResponseUser)
+@app.put("/users/me", response_model=user.UpdateUserResponse)
 async def put_user(
-        update_data: Annotated[UpdateUserRequest, Body()]
+        update_data: Annotated[UpdateUserRequest, Body()],
+        authorization: Annotated[str, Header(description="로그인 시 발급받은 토큰")]
 ):
-    update_time = datetime.now.isoformat()
-    return {"status": update_data.status,
+    update_time = datetime.datetime.now().isoformat()
+    # 실제 구현시 토큰에서 사용자 이메일을 추출해야 함
+    return {"status": "success",
             "data": {
                 "email": update_data.email,
                 "nickname": update_data.nickname,
@@ -305,9 +310,9 @@ async def delete_comment(
 async def auth_token(
         login_data: Annotated[LoginUserRequest, Body()]
 ):
-    return {"status": login_data.status,
+    return {"status": "success",
             "data": {
-                "token": "Bearer",
+                "token_type": "Bearer",
                 "access_token": "token_1234",
                 "expires_in": 3600
             }
