@@ -568,7 +568,7 @@ Cmd + T (Ctrl + T) 누르면 탭 추가가 가능합니다. 참고하세요!
 
 ### { 좋아요 취소 }
 
-**DELETE**`/posts/{post_id}/likes`
+**DELETE** `/posts/{post_id}/likes`
 
 등록한 좋아요를 취소합니다.
 
@@ -1142,7 +1142,7 @@ Cmd + T (Ctrl + T) 누르면 탭 추가가 가능합니다. 참고하세요!
     "nickname": "abc",
     "email": "example@naver.com",
     "profile_image": "image.123",
-    "updated_At": "2026-01-07T08:30:00+09:00"
+    "updated_at": "2026-01-07T08:30:00+09:00"
   }
 }
 ```
