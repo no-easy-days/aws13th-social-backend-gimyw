@@ -14,9 +14,7 @@ class CreateUser(BaseModel):
 
     @field_validator('password')
     @classmethod
-    def validate_password(cls, v: str) -> str:
-        if len(v) < 8:  # 최소 8자 이상
-            raise ValueError('비밀번호는 최소 8자 이상이어야 합니다')
+    def validate_password(cls, v: str) -> str:    # v는 입력값(비밀번호)
         if not re.search(r'[A-Za-z]', v):
             raise ValueError('비밀번호에 영문자가 포함되어야 합니다')
         if not re.search(r'\d', v):
@@ -46,7 +44,6 @@ class UpdateUserRequest(BaseModel):
     nickname: str
     profile_image: str | None = None
     new_password: str | None = None
-    updated_at: datetime
 
 
 # 수정된 프로필 응답
