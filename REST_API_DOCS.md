@@ -634,7 +634,7 @@ Cmd + T (Ctrl + T) 누르면 탭 추가가 가능합니다. 참고하세요!
   "status": "success",
   "data": {
     "post_id": "1",
-    "user_email": "example@naver.com",
+    "author_email": "example@naver.com",
     "created_at": "2026-01-04T12:00:00Z"
   }
 }

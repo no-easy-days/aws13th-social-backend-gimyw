@@ -45,6 +45,12 @@ class UpdateUserRequest(BaseModel):
     profile_image: str | None = None
     new_password: str | None = None
 
+    @field_validator('new_password')
+    @classmethod
+    def validate_password(cls, v: str) -> str:
+        if v is None:
+            return v
+        return CreateUser.validate_password(v)
 
 # 수정된 프로필 응답
 class UpdateUserResponse(BaseModel):

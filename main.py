@@ -88,6 +88,7 @@ async def get_user_comments(
         authorization: Annotated[str, Header(description="Bearer access token")],
         page: int = Query(default=1, ge=1, description="페이지 번호"),
         limit: int = Query(default=20, ge=1, le=100, description="페이지당 항목 수"),
+        sort: str | None = Query(default=None, description="정렬 기준 (created_at, updated_at)")
 ):
     return {
         "status": "success",
@@ -95,7 +96,7 @@ async def get_user_comments(
             {
                 "comment_id": "comment_1",
                 "post": {
-                    "id": "1",
+                    "post_id": "1",
                     "title": "게시글 제목"
                 },
                 "content": "내가 작성한 댓글",
@@ -170,7 +171,7 @@ async def put_user(
                 "email": "example@naver.com",
                 "nickname": "abc",
                 "profile_image": "profile_image",
-                "updated_at": "2026-01-07T08:30:00+09:00"
+                "updated_at": update_time
             }
             }
 
@@ -287,7 +288,7 @@ async def get_post(
 
 
 # 댓글 목록 조회
-@app.get("/posts/{post_id}/comments", response_model=post.CommentListResponse)
+@app.get("/posts/{post_id}/comments", response_model=post.CommentListResponse,status_code=status.HTTP_200_OK)
 async def get_post_comments(
         post_id: Annotated[str, Path(description="특정 게시글을 나타내는 유일한 식별자")],
         page: int = Query(default=1, ge=1, description="페이지 번호"),
@@ -418,7 +419,7 @@ async def change_comment(
         "status": "success",
         "data": {
             "post_id": post_id,
-            "id": comment_id,
+            "comment_id": comment_id,
             "author": {
                 "author_email": "example@naver.com",
                 "nickname": "abc"
