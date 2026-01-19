@@ -314,8 +314,10 @@ Cmd + T (Ctrl + T) 누르면 탭 추가가 가능합니다. 참고하세요!
 ```json
 {
   "status": "error",
-  "code": "POST_ACCESS_DENIED",
-  "message": "비공개 게시글입니다."
+  "error": {
+    "code": "POST_ACCESS_DENIED",
+    "message": "비공개 게시글입니다."
+  }
 }
 ```
 
@@ -324,8 +326,10 @@ Cmd + T (Ctrl + T) 누르면 탭 추가가 가능합니다. 참고하세요!
 ```json
 {
   "status": "error",
-  "code": "NOT_FOUND",
-  "message": "게시글을 찾을 수 없습니다."
+  "error": {
+    "code": "NOT_FOUND",
+    "message": "게시글을 찾을 수 없습니다."
+  }
 }
 ```
 
@@ -334,7 +338,7 @@ Cmd + T (Ctrl + T) 누르면 탭 추가가 가능합니다. 참고하세요!
 ```json
 {
   "status": "error",
-  "code": "**BAD_REQUEST**",
+  "code": "BAD_REQUEST",
   "message": "잘못된 게시글의 ID입니다."
 }
 ```

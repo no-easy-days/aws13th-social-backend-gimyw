@@ -1,5 +1,5 @@
 from typing import Annotated
-from datetime import datetime
+from datetime import datetime, timezone
 from fastapi import FastAPI, Query, Body, status, Header, Response, Path
 from enum import Enum
 from pydantic import EmailStr
@@ -147,7 +147,7 @@ async def get_user_likes(
 async def post_users(
         user_data: Annotated[user.CreateUser, Body()]
 ):
-    current_time = datetime.now().isoformat()
+    current_time = datetime.now(timezone.utc).isoformat()
     return {"status": "success",
             "data": {
                 "email": user_data.email,
@@ -164,7 +164,7 @@ async def put_user(
         update_data: Annotated[user.UpdateUserRequest, Body()],
         authorization: Annotated[str, Header(description="로그인 시 발급받은 토큰")]
 ):
-    update_time = datetime.now().isoformat()
+    update_time = datetime.now(timezone.utc).isoformat()
     # 실제 구현시 토큰에서 사용자 이메일을 추출해야 함
     return {"status": "success",
             "data": {

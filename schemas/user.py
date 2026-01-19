@@ -47,7 +47,7 @@ class UpdateUserRequest(BaseModel):
 
     @field_validator('new_password')
     @classmethod
-    def validate_password(cls, v: str) -> str:
+    def validate_password(cls, v: str | None) -> str | None:
         if v is None:
             return v
         return CreateUser.validate_password(v)
