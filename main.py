@@ -300,7 +300,7 @@ async def get_post_comments(
         "data": [
             {
                 "comment_id": "1",
-                "content": "댓글 내용입니다.",
+                "comment_content": "댓글 내용입니다.",
                 "author": {
                     "author_email": "example@naver.com",
                     "nickname": "abc"

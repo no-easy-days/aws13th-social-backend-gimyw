@@ -212,7 +212,7 @@ Cmd + T (Ctrl + T) 누르면 탭 추가가 가능합니다. 참고하세요!
   "data": [
     {
       "comment_id": "1",
-      "content": "댓글 내용입니다.",
+      "comment_content": "댓글 내용입니다.",
       "author": {
         "author_email": "example@naver.com",
         "nickname": "abc"
