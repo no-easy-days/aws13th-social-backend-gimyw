@@ -3,7 +3,7 @@ from datetime import datetime, timezone
 from fastapi import FastAPI, Query, Body, status, Header, Response, Path
 from enum import Enum
 from pydantic import EmailStr
-from schemas import user, post
+from schemas import user, post, auth
 from schemas.post import PostUpdateResponse, PostLikeCreateResponse
 
 
@@ -250,7 +250,6 @@ async def get_posts_sorted(
         page: int = Query(default=1, ge=1, description="페이지 번호"),
         limit: int = Query(default=20, ge=1, le=100, description="페이지당 항목 수")
 ):
-
     return {
         "status": "success",
         "data": [
@@ -459,7 +458,9 @@ async def delete_like(
 
 ############Comments##################
 # 댓글 삭제
-@app.delete("/comments/{comment_id}", status_code=status.HTTP_204_NO_CONTENT)
+@app.delete(
+    "/comments/{comment_id}",status_code=status.HTTP_204_NO_CONTENT,summary="댓글 삭제",description="본인이 작성한 댓글을 삭제합니다."
+)
 async def delete_comment(
         comment_id: Annotated[str, Path(description="삭제할 댓글 ID")],
         authorization: Annotated[str, Header(description="로그인 토큰")]
@@ -469,9 +470,9 @@ async def delete_comment(
 
 ######### auth ############
 # 회원 로그인
-@app.post("/auth/tokens", response_model=user.LoginUserResponse, status_code=status.HTTP_201_CREATED)
+@app.post("/auth/tokens", response_model=auth.LoginResponse, status_code=status.HTTP_201_CREATED)
 async def auth_token(
-        login_data: Annotated[user.LoginUserRequest, Body()]
+        login_data: Annotated[auth.LoginRequest, Body()]
 ):
     return {"status": "success",
             "data": {
