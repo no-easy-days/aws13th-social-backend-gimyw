@@ -7,16 +7,6 @@ from schemas import user, post, auth
 from schemas.post import PostUpdateResponse, PostLikeCreateResponse
 from schemas.common import PostSortType, Pagination, validate_password_logic
 
-
-class PostSortType(str, Enum):
-    '''
-    최신순,조회수순,좋아요순
-    '''
-    latest = "latest"
-    views = "views"
-    likes = "likes"
-
-
 app = FastAPI()
 
 
@@ -473,6 +463,7 @@ async def delete_comment(
 async def auth_token(
         login_data: Annotated[auth.LoginRequest, Body()]
 ):
+    _ = login_data
     return {"status": "success",
             "data": {
                 "token_type": "Bearer",
